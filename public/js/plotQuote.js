@@ -75,7 +75,7 @@ function createPlotData(data) {
 	
     for (var i=0; i<data.length; i++) {
         var time = new Date();
-        time.setTime(data[i].time);
+        time.setTime(toLocalTime(data[i].time));
         var timeLabel = time.format("MM-dd hh:mm:ss");
         labels.push(timeLabel);
 
@@ -89,7 +89,8 @@ function createPlotData(data) {
 
 function fetchData() {
     var lastItem = getLastDataItem();
-    var lastTime = (lastItem == null) ? (new Date()).setHours(9, 0, 0, 0) : lastItem.time;
+    var date = new Date();
+    var lastTime = (lastItem == null) ? toUtcTime(date.setHours(10, 0, 0, 0)) : lastItem.time;
     console.log('fetch data after time: ' + lastTime);
 
     $.get(document.URL + 'quote/sh000001/' + lastTime)
@@ -97,6 +98,14 @@ function fetchData() {
     .error(function(err) {
         console.error(err);
     });
+}
+
+function toUtcTime(time) {
+    return time + (-8) * 3600000;
+}
+
+function toLocalTime(time) {
+    return time + 8 * 3600000;
 }
 
 function getLastDataItem() {
