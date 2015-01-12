@@ -75,7 +75,7 @@ function createPlotData(data) {
 	
     for (var i=0; i<data.length; i++) {
         var time = new Date();
-        time.setTime(toLocalTime(data[i].time));
+        time.setTime(data[i].time);
         var timeLabel = time.format("MM-dd hh:mm:ss");
         labels.push(timeLabel);
 
